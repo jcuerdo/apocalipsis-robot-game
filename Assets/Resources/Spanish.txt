@@ -1,0 +1,7 @@
+﻿points=Puntos
+loading=Cargando
+last_score=Ultima puntuacion
+best_score=Mejor puntuacion
+play=Jugar
+exit=Salir
+time=Tiempo

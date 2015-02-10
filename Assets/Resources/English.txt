@@ -1,0 +1,7 @@
+﻿points=Points
+loading=Loading
+last_score=Last score
+best_score=Best score
+play=Play	
+exit=Exit
+time=Tiempo
