@@ -3,22 +3,18 @@ using System.Collections;
 
 
 public class menu : MonoBehaviour {
-	private bool ad_loaded = false;
-	// Use this for initialization
-	private void loadAd () 
+
+	private AdMob admob = new AdMob();
+
+	void Start()
 	{
-		this.ad_loaded = true;
-		GameObject menuad = GameObject.Find( "menuad" );
-		AdMobPlugin admp = (AdMobPlugin) menuad.GetComponent( typeof(AdMobPlugin) );
-		admp.size = AdSize.IAB_BANNER;
-		admp.Reconfigure();
+		this.admob.requestBanner();
+		this.admob.requestBannerInterstitial();
 	}
-	
+
 	void OnGUI () {
-		if( !this.ad_loaded )
-		{
-			loadAd();
-		}
+		this.admob.showBanners();
+		this.admob.showInterstitial();
 		GUIStyle text_style =  new GUIStyle();
 		text_style.fontSize = Screen.width/20;
 		text_style.alignment = TextAnchor.MiddleCenter;
@@ -40,6 +36,7 @@ public class menu : MonoBehaviour {
 		GUI.Box(new Rect (0, 0, Screen.width/2 , Screen.height/4+15 ), "" );
 		// Make the first button. If it is pressed, Application.Loadlevel (1) will be executed
 		if( GUI.Button(new Rect(5, 5, Screen.width/2-10, Screen.height/8), TextManager.Instance.getText( "play" ) ,button_style)) {
+			this.admob.hideBanners();
 			Application.LoadLevel(1);
 		}
 		

@@ -9,9 +9,6 @@ public class maincharacter : MonoBehaviour {
 	{
 		this.game = new Game();
 		GameObject gamead = GameObject.Find( "gamead" );
-		AdMobPlugin admp = (AdMobPlugin) gamead.GetComponent( typeof(AdMobPlugin) );
-		admp.size = AdSize.SMART_BANNER;
-		admp.Reconfigure();
 	}
 
 	
@@ -32,7 +29,7 @@ public class maincharacter : MonoBehaviour {
 		{
 			collision.rigidbody.velocity = Vector3.left;
 			transform.Rotate( 0,0,-10 );
-			collision.gameObject.rigidbody.useGravity = true;
+			collision.gameObject.GetComponent<Rigidbody>().useGravity = true;
 			game.setGameOver( true );
 		}
 
@@ -44,8 +41,8 @@ public class maincharacter : MonoBehaviour {
 		{
 			game.incrementPoints();
 			GameObject text_points = GameObject.Find("textpoints");
-			text_points.guiText.text = TextManager.Instance.getText( "points" ) + " : " + game.getPoints();
-			collision.gameObject.animation.Play( "animationvida" );
+			text_points.GetComponent<GUIText>().text = TextManager.Instance.getText( "points" ) + " : " + game.getPoints();
+			collision.gameObject.GetComponent<Animation>().Play( "animationvida" );
 		}
 	}
 }

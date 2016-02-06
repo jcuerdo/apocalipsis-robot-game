@@ -36,16 +36,16 @@ public class Game : MonoBehaviour
 	public Game()
 	{
 		GameObject text_points = GameObject.Find("textpoints");
-		text_points.guiText.text = TextManager.Instance.getText( "points" ) + " : 0" ;
+		text_points.GetComponent<GUIText>().text = TextManager.Instance.getText( "points" ) + " : 0" ;
 
 		GameObject text_time = GameObject.Find("texttime");
-		text_time.guiText.text =  TextManager.Instance.getText( "time" ) + " : 0" ;
+		text_time.GetComponent<GUIText>().text =  TextManager.Instance.getText( "time" ) + " : 0" ;
 	}
 
 	public void updateElements()
 	{
 		GameObject text_time = GameObject.Find("texttime");
-		text_time.guiText.text = TextManager.Instance.getText( "time" ) + " : " + (int)Time.timeSinceLevelLoad ;
+		text_time.GetComponent<GUIText>().text = TextManager.Instance.getText( "time" ) + " : " + (int)Time.timeSinceLevelLoad ;
 
 		this.current_velocity = (int)Time.timeSinceLevelLoad / this.velocity_increment_interval + ini_velocity;
 
@@ -80,7 +80,7 @@ public class Game : MonoBehaviour
 	{
 		foreach( GameObject element in this.elements )
 		{
-			if( element.rigidbody.position.x < ENEMY_X_END )
+			if( element.GetComponent<Rigidbody>().position.x < ENEMY_X_END )
 			{
 				elements.Remove( element );
 				Destroy( element );
@@ -124,8 +124,8 @@ public class Game : MonoBehaviour
 		
 		Vector3 position = new Vector3( ENEMY_X_START, platform_y + 1f , 0 );
 		GameObject vida1 = (GameObject) Instantiate( vida,position,vida.transform.rotation );
-		vida1.rigidbody.velocity = Vector3.left;
-		vida1.rigidbody.velocity = vida1.rigidbody.velocity * velocity_mult;
+		vida1.GetComponent<Rigidbody>().velocity = Vector3.left;
+		vida1.GetComponent<Rigidbody>().velocity = vida1.GetComponent<Rigidbody>().velocity * velocity_mult;
 		//vida1.AddComponent("vida");
 		
 		return vida1;
@@ -141,8 +141,8 @@ public class Game : MonoBehaviour
 		
 		Vector3 position = new Vector3( ENEMY_X_START + position_x_add, platform_y + 1.3f , 0 );
 		GameObject enemy1 = ( GameObject ) Instantiate(enemy,position,enemy.transform.rotation);
-		enemy1.rigidbody.velocity = Vector3.left;
-		enemy1.rigidbody.velocity = enemy1.rigidbody.velocity * velocity_mult;
+		enemy1.GetComponent<Rigidbody>().velocity = Vector3.left;
+		enemy1.GetComponent<Rigidbody>().velocity = enemy1.GetComponent<Rigidbody>().velocity * velocity_mult;
 		//enemy1.AddComponent( "enemigo" );
 		
 		return enemy1;
@@ -163,13 +163,13 @@ public class Game : MonoBehaviour
 		}	
 		if( touch == 0 || Input.GetKeyUp( "up" ) || Input.GetKeyUp( "down" ) )
 		{
-			character.renderer.material.mainTexture = Resources.Load("maincharacter") as Texture2D;
+			character.GetComponent<Renderer>().material.mainTexture = Resources.Load("maincharacter") as Texture2D;
 		}
 	}
 	
 	private void changeCharacterPlatform( int direction, Vector3 pos, Transform character )
 	{
-		character.renderer.material.mainTexture = Resources.Load("maincharacterback") as Texture2D;
+		character.GetComponent<Renderer>().material.mainTexture = Resources.Load("maincharacterback") as Texture2D;
 		if( direction == DIRECTION_UP )
 		{
 			if( this.current_platform != 3 )
