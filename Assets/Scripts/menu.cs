@@ -5,16 +5,26 @@ using System.Collections;
 public class menu : MonoBehaviour {
 
 	private AdMob admob = new AdMob();
-
+	private bool started = false;
 	void Start()
 	{
 		this.admob.requestBanner();
 		this.admob.requestBannerInterstitial();
 	}
 
+
+	void Update()
+	{
+		if(!started)
+		{
+			this.admob.showBanners();
+			this.admob.showInterstitial();	
+		}
+
+	}
+
 	void OnGUI () {
-		this.admob.showBanners();
-		this.admob.showInterstitial();
+
 		GUIStyle text_style =  new GUIStyle();
 		text_style.fontSize = Screen.width/20;
 		text_style.alignment = TextAnchor.MiddleCenter;
@@ -36,7 +46,11 @@ public class menu : MonoBehaviour {
 		GUI.Box(new Rect (0, 0, Screen.width/2 , Screen.height/4+15 ), "" );
 		// Make the first button. If it is pressed, Application.Loadlevel (1) will be executed
 		if( GUI.Button(new Rect(5, 5, Screen.width/2-10, Screen.height/8), TextManager.Instance.getText( "play" ) ,button_style)) {
+
+			this.started = true;
+
 			this.admob.hideBanners();
+
 			Application.LoadLevel(1);
 		}
 		
