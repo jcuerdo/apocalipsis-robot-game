@@ -2,13 +2,13 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class TextManager : MonoBehaviour 
+public class TextManager 
 {
 	private static TextManager instance;
 	private Dictionary<string,string> textTable;
 	private const string DEFAULT_LANG = "English";
 
-	private TextManager () 
+	private TextManager() 
 	{
 		textTable = new Dictionary<string,string>();
 		loadLanguage();
@@ -20,8 +20,7 @@ public class TextManager : MonoBehaviour
 		{
 			if (instance == null) 
 			{
-				GameObject notificationObject = new GameObject("Default TextManager");
-				instance = (TextManager) notificationObject.AddComponent(typeof(TextManager));				
+				instance = new TextManager();			
 			}
 			return instance;	
 		}
