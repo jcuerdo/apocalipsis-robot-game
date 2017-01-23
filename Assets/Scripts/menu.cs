@@ -4,10 +4,12 @@ using System.Collections;
 
 public class menu : MonoBehaviour {
 
-	private AdMob admob = new AdMob();
+	private AdMob admob;
 	private bool started = false;
+	private bool banners = true;
 	void Start()
 	{
+		this.admob = new AdMob();
 		this.admob.requestBanner();
 		this.admob.requestBannerInterstitial();
 	}
@@ -17,8 +19,13 @@ public class menu : MonoBehaviour {
 	{
 		if(!started)
 		{
+		}
+		if(this.banners){
 			this.admob.showBanners();
-			this.admob.showInterstitial();	
+			this.admob.showInterstitial();
+		}
+		else{
+			this.admob.hideBanners();
 		}
 
 	}
@@ -48,8 +55,8 @@ public class menu : MonoBehaviour {
 		if( GUI.Button(new Rect(5, 5, Screen.width/2-10, Screen.height/8), TextManager.Instance.getText( "play" ) ,button_style)) {
 
 			this.started = true;
-
 			this.admob.hideBanners();
+			this.banners = false;
 
 			Application.LoadLevel(1);
 		}

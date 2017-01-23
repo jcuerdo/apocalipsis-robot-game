@@ -1,12 +1,13 @@
 using UnityEngine;
 using System.Collections;
+using System.IO;
 
 public class Game : MonoBehaviour
 {
 	const int PLATFORM_1 = 1;
 	const int PLATFORM_2 = 2;
 	const int PLATFORM_3 = 3;
-	
+
 	const int DIRECTION_UP = 1;
 	const int DIRECTION_DOWN = -1;
 
@@ -18,7 +19,7 @@ public class Game : MonoBehaviour
 	private float[] platform_positions = new float[3]{ -4f, -1.25f, 1.5f };
 	private int current_platform = 2;
 	private bool gameover = false;
-	
+
 	private int points = 0;
 
 	private float ini_velocity = 5f;
@@ -32,6 +33,7 @@ public class Game : MonoBehaviour
 	private GameInput game_input = new GameInput();
 	private ArrayList elements = new ArrayList();
 	private RandomHelper random_helper =  new RandomHelper();
+
 
 	public Game()
 	{
@@ -54,7 +56,7 @@ public class Game : MonoBehaviour
 			this.last_enemy_update = Time.timeSinceLevelLoad;
 			ArrayList platforms = this.random_helper.generateRandoms( 0,2,2 );
 			ArrayList positions_x_add = this.random_helper.generateRandoms( 0,3,3 );
-			
+
 			foreach ( object platform in platforms )
 			{
 				this.elements.Add( this.createEnemy( this.platform_positions[(int)platform], current_velocity, (int)positions_x_add[(int)platform] ) );
@@ -117,34 +119,43 @@ public class Game : MonoBehaviour
 	{
 		this.gameover = gameover;
 	}
-	
+
 	private GameObject createPoint( float platform_y, float velocity_mult = 1 )
 	{
 		GameObject vida = GameObject.Find("point");
-		
+
 		Vector3 position = new Vector3( ENEMY_X_START, platform_y + 1f , 0 );
 		GameObject vida1 = (GameObject) Instantiate( vida,position,vida.transform.rotation );
 		vida1.GetComponent<Rigidbody>().velocity = Vector3.left;
 		vida1.GetComponent<Rigidbody>().velocity = vida1.GetComponent<Rigidbody>().velocity * velocity_mult;
 		//vida1.AddComponent("vida");
-		
+
 		return vida1;
 	}
-	
+
 	private GameObject createEnemy( float platform_y, float velocity_mult = 1, float position_x_add = 0, int type = 0 )
 	{
+		Object[] enemies = Resources.LoadAll<Texture2D>("enemy");
+
+		GameObject enemy = GameObject.Find("enemy");
+
+
 		if( type == 0 )
 		{
-			type = Random.Range( 1, 4 );
+			type = Random.Range( 0 , enemies.Length );
 		}
-		GameObject enemy = GameObject.Find( "enemy" + type );
-		
+
 		Vector3 position = new Vector3( ENEMY_X_START + position_x_add, platform_y + 1.3f , 0 );
 		GameObject enemy1 = ( GameObject ) Instantiate(enemy,position,enemy.transform.rotation);
 		enemy1.GetComponent<Rigidbody>().velocity = Vector3.left;
 		enemy1.GetComponent<Rigidbody>().velocity = enemy1.GetComponent<Rigidbody>().velocity * velocity_mult;
-		//enemy1.AddComponent( "enemigo" );
-		
+
+
+		enemy1.GetComponent<Renderer>().material.mainTexture = enemies[type] as Texture;
+
+		//enemy1.GetComponent<Renderer>().material.mainTexture = Resources.Load<Texture2D> ("enemy/" + directory[type].Name.Replace(".png",""));
+
+
 		return enemy1;
 	}
 
@@ -152,7 +163,7 @@ public class Game : MonoBehaviour
 	{
 		Vector3 pos = character.position;
 		int touch = this.game_input.getTouch();
-		
+
 		if ( touch > 0 || Input.GetKeyDown( "up" ) ) 
 		{  
 			this.changeCharacterPlatform( DIRECTION_UP, pos, character );
@@ -166,7 +177,7 @@ public class Game : MonoBehaviour
 			character.GetComponent<Renderer>().material.mainTexture = Resources.Load("maincharacter") as Texture2D;
 		}
 	}
-	
+
 	private void changeCharacterPlatform( int direction, Vector3 pos, Transform character )
 	{
 		character.GetComponent<Renderer>().material.mainTexture = Resources.Load("maincharacterback") as Texture2D;
@@ -176,8 +187,8 @@ public class Game : MonoBehaviour
 			{
 				this.current_platform++;
 				character.position = new Vector3(pos.x , 
-				                                 pos.y + 3.3f , 
-				                                 pos.z);
+					pos.y + 3.3f , 
+					pos.z);
 			}
 		}
 		if ( direction == DIRECTION_DOWN )
@@ -186,8 +197,8 @@ public class Game : MonoBehaviour
 			{
 				this.current_platform--;
 				character.position = new Vector3(pos.x , 
-				                                 pos.y - 2.7f , 
-				                                 pos.z);
+					pos.y - 2.7f , 
+					pos.z);
 			}
 		}
 	}
